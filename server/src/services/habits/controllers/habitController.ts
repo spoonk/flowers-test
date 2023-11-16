@@ -2,6 +2,7 @@
 import Habit from "../../../models/habit";
 import { ObjectId } from "mongoose";
 import User from "../../../models/user";
+import { addFlowerToGarden } from "../../garden/controllers/gardenController";
 
 interface addHabitParams {
   userId: string;
@@ -88,8 +89,20 @@ const completeHabit = async (params: completeHabitParams | any) => {
   const validatedParams = validateCompleteHabitParams(params);
   if (!validatedParams) return { success: false };
   const { userId, habitId } = validatedParams;
+  // @todo: refactor to pass habit around
+  const habit = await Habit.findById(habitId);
+  if ((habit && habit.completedToday) || !habit) return;
+  const flowerId = await resolveFlowerForHabit(habitId);
 
-  // @todo: need to set up a garden controller
+  // @todo: bad cast here!
+  const gardenId = await addFlowerToGarden(flowerId as ObjectId, userId);
+  return gardenId;
+  // @todo: update habit statistics
+};
+
+const resolveFlowerForHabit = async (habitId: string) => {
+  const habit = await Habit.findById(habitId);
+  return habit?.reward;
 };
 
 export { addHabit, completeHabit, getHabits };

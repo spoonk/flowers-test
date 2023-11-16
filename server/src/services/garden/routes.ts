@@ -1,5 +1,9 @@
 import { Express, Request, Response } from "express";
 
-const installRoutes = (app: Express) => {};
+const installGardenRoutes = (app: Express) => {
+  app.get("/garden", async (req: Request, res: Response) => {
+    res.json({ hi: "123" });
+  });
+};
 
-export default installRoutes;
+export default installGardenRoutes;

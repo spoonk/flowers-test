@@ -1,5 +1,9 @@
 import { Express, Request, Response } from "express";
-import { addHabit, getHabits } from "./controllers/habitController";
+import {
+  addHabit,
+  completeHabit,
+  getHabits,
+} from "./controllers/habitController";
 
 const installHabitRoutes = (app: Express) => {
   app.post("/addhabit", async (req: Request, res: Response) => {
@@ -16,7 +20,10 @@ const installHabitRoutes = (app: Express) => {
   });
 
   app.post("/completeHabit", async (req: Request, res: Response) => {
-    res.json({ succ: true });
+    console.log("/completeHabit");
+    const params = req.body;
+    const gardenId = await completeHabit(params);
+    res.json({ gardenId });
   });
 };
 
