@@ -30,7 +30,7 @@ const habitSchema = new Schema<IHabit>({
   name: { type: String, required: true },
   description: { type: String, required: true },
   type: { type: String, default: "easy" },
-  reward: { type: Types.ObjectId, required: true },
+  reward: { type: Types.ObjectId, required: false }, // false for now
   difficulty: { type: String, required: true },
   completedToday: { type: Boolean, default: false },
   streak: { type: Number, default: 0 },
