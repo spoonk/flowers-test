@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { exit } from "process";
 dotenv.config();
 
-const { PORT, SERVER_BASE_URL, MONGO_URL } = process.env;
+const { SERVER_PORT, SERVER_BASE_URL, MONGO_URL } = process.env;
 if (!MONGO_URL) exit();
 
 const app = express();
@@ -19,6 +19,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello, cruel world");
 });
 
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+app.listen(SERVER_PORT, () => {
+  console.log(`server started on port ${SERVER_PORT}`);
 });
