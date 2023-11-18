@@ -1,5 +1,4 @@
-import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Dropdown } from "react-bootstrap";
 
 // todo: make a global types file
@@ -11,41 +10,30 @@ interface User {
   lastLoginTime: string;
   timeZone: string;
   userId: string;
-  // habits: ObjectId[];
-  // garden?: ObjectId;
+  _id: string;
 }
 
 interface SelectUserProps {
   setUserCB: (newUserId: string) => void;
+  users: User[];
 }
 
-const SelectUser: FC<SelectUserProps> = ({ setUserCB }) => {
-  const [userIds, setUserIds] = useState<User[]>([]);
-  const fetchUserIds = async () => {
-    // @todo: make server api client
-    // @todo: dotenv for server route
-    try {
-      const users = await axios.get<{ users: User[] }>(
-        `http://localhost:8080/users`,
-      );
-      console.log(users);
-      setUserIds(users.data.users);
-    } catch (error) {
-      console.log(error);
-    }
+const SelectUser: FC<SelectUserProps> = ({ setUserCB, users }) => {
+  const onItemClicked = (userId: string) => {
+    setUserCB(userId);
   };
-
-  useEffect(() => {
-    fetchUserIds();
-  }, []);
 
   return (
     <div className="admin-page">
       <Dropdown>
-        <Dropdown.Toggle variant="success">Dropdown Button</Dropdown.Toggle>
+        <Dropdown.Toggle variant="success">users</Dropdown.Toggle>
         <Dropdown.Menu>
-          {userIds.map((userId) => {
-            return <Dropdown.Item>{userId.username}</Dropdown.Item>;
+          {users.map((user) => {
+            return (
+              <Dropdown.Item onClick={() => onItemClicked(user._id)}>
+                {user.username}
+              </Dropdown.Item>
+            );
           })}
         </Dropdown.Menu>
       </Dropdown>
