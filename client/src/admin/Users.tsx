@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
-import { Card, Dropdown } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import SelectUser from "./SelectUser";
 import CreateUser from "./CreateUser";
 
@@ -17,12 +17,14 @@ interface User {
   // garden?: ObjectId;
 }
 
-const Users: FC<{}> = () => {
+interface UsersProps {
+  setUserCB: (userId: string) => void;
+  currentUserId: string | undefined;
+}
+
+const Users: FC<UsersProps> = ({ setUserCB, currentUserId }) => {
   // @todo: probably just do the full user here, not just id
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUserId, setCurrentUserId] = useState<string | undefined>(
-    undefined,
-  );
 
   const fetchUsers = async () => {
     // @todo: make server api client
@@ -47,7 +49,7 @@ const Users: FC<{}> = () => {
       <Card>
         <Card.Title>Users</Card.Title>
         <h4>Selected user: {currentUserId || "no user selected"}</h4>
-        <SelectUser setUserCB={setCurrentUserId} users={users} />
+        <SelectUser setUserCB={setUserCB} users={users} />
         <CreateUser refreshUsers={fetchUsers} />
       </Card>
     </div>
