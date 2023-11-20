@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Habit } from "../types";
 import CreateHabit from "./CreateHabit";
+import HabitBox from "./HabitBox";
 
 interface HabitProps {
   userId: string | undefined;
@@ -41,7 +42,9 @@ const Habits: FC<HabitProps> = ({ userId }) => {
           <>
             <div>
               {habits.map((habit) => {
-                return <h5>{habit.name}</h5>;
+                return (
+                  <HabitBox userId={userId} habitId={habit._id} habit={habit} />
+                );
               })}
             </div>
             <CreateHabit refreshHabits={() => fetchHabits()} userId={userId} />

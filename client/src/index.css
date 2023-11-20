@@ -20,3 +20,12 @@ code {
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.habit-box {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}

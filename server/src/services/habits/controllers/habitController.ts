@@ -94,7 +94,7 @@ const completeHabit = async (params: completeHabitParams | any) => {
   if ((habit && habit.completedToday) || !habit) return;
   const flowerId = await resolveFlowerForHabit(habitId);
 
-  // @todo: bad cast here!
+  // @todo: weird cast here!
   const gardenId = await addFlowerToGarden(flowerId as ObjectId, userId);
   return gardenId;
   // @todo: update habit statistics
@@ -102,7 +102,7 @@ const completeHabit = async (params: completeHabitParams | any) => {
 
 const resolveFlowerForHabit = async (habitId: string) => {
   const habit = await Habit.findById(habitId);
-  return habit?.reward;
+  return habit?.reward || "655b8adb253442a30c20cc8f"; // @todo: bad
 };
 
 export { addHabit, completeHabit, getHabits };

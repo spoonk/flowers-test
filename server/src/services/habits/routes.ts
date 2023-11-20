@@ -23,6 +23,7 @@ const installHabitRoutes = (app: Express) => {
     console.log("/completeHabit");
     const params = req.body;
     const gardenId = await completeHabit(params);
+    // does this make sense to return gardenId? answer: no
     res.json({ gardenId });
   });
 };

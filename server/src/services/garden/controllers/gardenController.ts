@@ -4,7 +4,7 @@ import User from "../../../models/user";
 
 const addFlowerToGarden = async (flowerId: ObjectId, userId: string) => {
   // initialize garden if not exists
-  const garden = await getGarden(userId);
+  const garden = await getOrCreateGarden(userId);
   garden?.flowers.push({
     flowerId,
     position: {
@@ -17,7 +17,8 @@ const addFlowerToGarden = async (flowerId: ObjectId, userId: string) => {
   return garden?.id;
 };
 
-const getGarden = async (userId: string) => {
+// @todo: should separate into two functions
+const getOrCreateGarden = async (userId: string) => {
   const user = await User.findById(userId);
   if (!user) return undefined;
 
@@ -25,6 +26,7 @@ const getGarden = async (userId: string) => {
   if (gardenId) return await Garden.findById(gardenId);
 
   const garden = new Garden({ user: userId });
+  await garden.save(); // first save, just for debugging
   user.garden = garden.id;
   await user.save();
   return garden;

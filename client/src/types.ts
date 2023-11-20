@@ -9,6 +9,7 @@ export interface Habit {
   streak: number;
   daysCompleted: string[];
   health: number;
+  _id: string;
 }
 
 export interface User {
