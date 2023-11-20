@@ -1,19 +1,7 @@
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-
-// todo: make a global types file
-interface User {
-  username: string;
-  email: string;
-  password: string;
-  accountCreated: string;
-  lastLoginTime: string;
-  timeZone: string;
-  // habits: ObjectId[];
-  // garden?: ObjectId;
-}
 
 interface createUserParams {
   refreshUsers: () => void;

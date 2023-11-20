@@ -2,19 +2,8 @@ import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { toast } from "react-toastify";
-
-interface Habit {
-  userId: string;
-  name: string;
-  description: string;
-  type: string;
-  reward: string; // id of flower
-  difficulty: string;
-  completedToday: boolean;
-  streak: number;
-  daysCompleted: string[];
-  health: number;
-}
+import { Habit } from "../types";
+import CreateHabit from "./CreateHabit";
 
 interface HabitProps {
   userId: string | undefined;
@@ -49,11 +38,14 @@ const Habits: FC<HabitProps> = ({ userId }) => {
       <Card>
         <Card.Title>Habits</Card.Title>
         {userId ? (
-          <div>
-            {habits.map((habit) => {
-              return <h5>{habit.name}</h5>;
-            })}
-          </div>
+          <>
+            <div>
+              {habits.map((habit) => {
+                return <h5>{habit.name}</h5>;
+              })}
+            </div>
+            <CreateHabit refreshHabits={() => fetchHabits()} userId={userId} />
+          </>
         ) : (
           <h4>please select at user</h4>
         )}

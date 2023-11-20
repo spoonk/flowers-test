@@ -6,7 +6,7 @@ import {
 } from "./controllers/habitController";
 
 const installHabitRoutes = (app: Express) => {
-  app.post("/addhabit", async (req: Request, res: Response) => {
+  app.post("/addHabit", async (req: Request, res: Response) => {
     console.log("/addHabit");
     const params = req.body;
     const { newHabit } = await addHabit(params);
