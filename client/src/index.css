@@ -29,3 +29,8 @@ code {
   text-align: center;
   justify-content: center;
 }
+
+.dummy-flower {
+  height: 50px;
+  width: 50px;
+}

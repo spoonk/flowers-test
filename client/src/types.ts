@@ -20,3 +20,15 @@ export interface User {
   lastLoginTime: string;
   timeZone: string;
 }
+
+export interface Garden {
+  user: string;
+  flowers: {
+    flowerId: string;
+    position: {
+      x: number;
+      y: number;
+      z: number;
+    };
+  }[];
+}

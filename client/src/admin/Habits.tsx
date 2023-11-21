@@ -8,9 +8,10 @@ import HabitBox from "./HabitBox";
 
 interface HabitProps {
   userId: string | undefined;
+  fetchGarden: () => void;
 }
 
-const Habits: FC<HabitProps> = ({ userId }) => {
+const Habits: FC<HabitProps> = ({ userId, fetchGarden }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
 
   const fetchHabits = async () => {
@@ -43,7 +44,12 @@ const Habits: FC<HabitProps> = ({ userId }) => {
             <div>
               {habits.map((habit) => {
                 return (
-                  <HabitBox userId={userId} habitId={habit._id} habit={habit} />
+                  <HabitBox
+                    fetchGarden={fetchGarden}
+                    userId={userId}
+                    habitId={habit._id}
+                    habit={habit}
+                  />
                 );
               })}
             </div>

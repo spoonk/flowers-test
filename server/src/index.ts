@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { exit } from "process";
 import installUserRoutes from "./services/users/routes";
 import installHabitRoutes from "./services/habits/routes";
+import installGardenRoutes from "./services/garden/routes";
 const cors = require("cors");
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cors());
 
 installUserRoutes(app);
 installHabitRoutes(app);
+installGardenRoutes(app);
 
 // connect to mongodb
 mongoose.connect(`${MONGO_URL}${COLLECTION}`);

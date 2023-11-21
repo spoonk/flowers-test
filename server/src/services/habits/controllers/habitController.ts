@@ -3,6 +3,7 @@ import Habit from "../../../models/habit";
 import { ObjectId } from "mongoose";
 import User from "../../../models/user";
 import { addFlowerToGarden } from "../../garden/controllers/gardenController";
+import Flower from "../../../models/flowers";
 
 interface addHabitParams {
   userId: string;
@@ -25,8 +26,9 @@ const validateAddHabitParams = ({
   return { userId, name, description };
 };
 
-const determineReward = (userId: string) => {
-  return 1;
+const determineReward = async (userId: string) => {
+  const flowers = await Flower.find();
+  return flowers[0]?._id;
 };
 
 const addHabit = async (params: addHabitParams | any) => {
@@ -38,6 +40,7 @@ const addHabit = async (params: addHabitParams | any) => {
     userId,
     description,
     name,
+    reward: await determineReward(userId),
     difficulty: "easy",
     type: "daily",
   });
