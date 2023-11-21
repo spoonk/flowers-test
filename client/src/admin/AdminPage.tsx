@@ -11,11 +11,12 @@ const AdminPage: FC<{}> = () => {
     undefined,
   );
 
-  // @todo: aaa need redux
   const [garden, setGarden] = useState<Garden | undefined>(undefined);
 
   useEffect(() => {
-    fetchGarden();
+    if (currentUserId) {
+      fetchGarden();
+    }
   }, [currentUserId]);
 
   const fetchGarden = async () => {
