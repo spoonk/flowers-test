@@ -5,13 +5,13 @@ import DummyGarden from "./DummyGarden";
 import axios from "axios";
 import { Garden } from "../types";
 import { toast } from "react-toastify";
+import { useAppSelector } from "../slices/hooks";
 
 const AdminPage: FC<{}> = () => {
-  const [currentUserId, setCurrentUserId] = useState<string | undefined>(
-    undefined,
-  );
-
   const [garden, setGarden] = useState<Garden | undefined>(undefined);
+  const currentUserId = useAppSelector(
+    (state) => state.userReducer.currentUserID,
+  );
 
   useEffect(() => {
     if (currentUserId) {
@@ -38,8 +38,8 @@ const AdminPage: FC<{}> = () => {
 
   return (
     <div className="admin-page">
-      <Users setUserCB={setCurrentUserId} currentUserId={currentUserId} />
-      <Habits userId={currentUserId} fetchGarden={fetchGarden} />
+      <Users />
+      <Habits fetchGarden={fetchGarden} />
       {currentUserId && (
         <DummyGarden garden={garden} fetchGarden={() => fetchGarden} />
       )}

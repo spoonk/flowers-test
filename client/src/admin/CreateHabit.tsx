@@ -2,17 +2,22 @@ import axios from "axios";
 import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { Habit } from "../types";
+import { useAppSelector } from "../slices/hooks";
 
 interface createHabitParams {
   refreshHabits: () => void;
-  userId: string;
 }
 
-const CreateHabit: FC<createHabitParams> = ({ refreshHabits, userId }) => {
+const CreateHabit: FC<createHabitParams> = ({ refreshHabits }) => {
+  const currentUserId = useAppSelector(
+    (state) => state.userReducer.currentUserID,
+  );
+
   const [name, setName] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
 
+  // would really love for this entire thing to be in a thunk or smth
+  // (I don't know what a thunk is)
   const createUser = async () => {
     if (!name || !description) {
       toast.error("fill out fields man");
@@ -25,7 +30,7 @@ const CreateHabit: FC<createHabitParams> = ({ refreshHabits, userId }) => {
         {
           name,
           description,
-          userId,
+          userId: currentUserId,
         },
       );
 

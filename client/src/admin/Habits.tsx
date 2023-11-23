@@ -5,13 +5,16 @@ import { toast } from "react-toastify";
 import { Habit } from "../types";
 import CreateHabit from "./CreateHabit";
 import HabitBox from "./HabitBox";
+import { useAppSelector } from "../slices/hooks";
 
 interface HabitProps {
-  userId: string | undefined;
   fetchGarden: () => void;
 }
 
-const Habits: FC<HabitProps> = ({ userId, fetchGarden }) => {
+const Habits: FC<HabitProps> = ({ fetchGarden }) => {
+  const currentUserId = useAppSelector(
+    (state) => state.userReducer.currentUserID,
+  );
   const [habits, setHabits] = useState<Habit[]>([]);
 
   const fetchHabits = async () => {
@@ -21,7 +24,7 @@ const Habits: FC<HabitProps> = ({ userId, fetchGarden }) => {
       const habits = await axios.get<{ habits: Habit[] }>(
         `http://localhost:8080/habits`,
         {
-          params: { userId },
+          params: { userId: currentUserId },
         },
       );
       setHabits(habits.data.habits);
@@ -30,30 +33,29 @@ const Habits: FC<HabitProps> = ({ userId, fetchGarden }) => {
   };
 
   useEffect(() => {
-    if (userId) {
+    if (currentUserId) {
       fetchHabits();
     }
-  }, [userId]);
+  }, [currentUserId]);
 
   return (
     <div className="habits-scripts">
       <Card>
         <Card.Title>Habits</Card.Title>
-        {userId ? (
+        {currentUserId ? (
           <>
             <div>
               {habits.map((habit) => {
                 return (
                   <HabitBox
                     fetchGarden={fetchGarden}
-                    userId={userId}
                     habitId={habit._id}
                     habit={habit}
                   />
                 );
               })}
             </div>
-            <CreateHabit refreshHabits={() => fetchHabits()} userId={userId} />
+            <CreateHabit refreshHabits={() => fetchHabits()} />
           </>
         ) : (
           <h4>please select at user</h4>

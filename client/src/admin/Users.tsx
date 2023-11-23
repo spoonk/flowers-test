@@ -1,40 +1,26 @@
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import SelectUser from "./SelectUser";
 import CreateUser from "./CreateUser";
+import { User } from "../types";
+import { useAppDispatch, useAppSelector } from "../slices/hooks";
+import { setUsers } from "../slices/userSlice";
 
-interface User {
-  username: string;
-  email: string;
-  password: string;
-  accountCreated: string;
-  lastLoginTime: string;
-  timeZone: string;
-  userId: string;
-  _id: string;
-  // habits: ObjectId[];
-  // garden?: ObjectId;
-}
+const Users: FC<{}> = () => {
+  const dispatch = useAppDispatch();
+  const currentUserId = useAppSelector(
+    (state) => state.userReducer.currentUserID,
+  );
 
-interface UsersProps {
-  setUserCB: (userId: string) => void;
-  currentUserId: string | undefined;
-}
-
-const Users: FC<UsersProps> = ({ setUserCB, currentUserId }) => {
-  // @todo: probably just do the full user here, not just id
-  const [users, setUsers] = useState<User[]>([]);
-
+  // todo: move this into a thunk so it can be called as a side-effect
   const fetchUsers = async () => {
     // @todo: make server api client
-    // @todo: dotenv for server route
     try {
       const users = await axios.get<{ users: User[] }>(
         `http://localhost:8080/users`,
       );
-      console.log(users);
-      setUsers(users.data.users);
+      dispatch(setUsers(users.data.users));
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +35,7 @@ const Users: FC<UsersProps> = ({ setUserCB, currentUserId }) => {
       <Card>
         <Card.Title>Users</Card.Title>
         <h4>Selected user: {currentUserId || "no user selected"}</h4>
-        <SelectUser setUserCB={setUserCB} users={users} />
+        <SelectUser />
         <CreateUser refreshUsers={fetchUsers} />
       </Card>
     </div>

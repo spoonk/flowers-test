@@ -19,6 +19,7 @@ export interface User {
   accountCreated: string;
   lastLoginTime: string;
   timeZone: string;
+  _id: string;
 }
 
 export interface Garden {
