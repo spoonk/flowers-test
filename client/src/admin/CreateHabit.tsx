@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../slices/hooks";
+import { addHabit } from "../api/habits.api";
 
 interface createHabitParams {
   refreshHabits: () => void;
@@ -18,37 +19,22 @@ const CreateHabit: FC<createHabitParams> = ({ refreshHabits }) => {
 
   // would really love for this entire thing to be in a thunk or smth
   // (I don't know what a thunk is)
-  const createUser = async () => {
-    if (!name || !description) {
+  const createHabit = async () => {
+    if (!name || !description || !currentUserId) {
       toast.error("fill out fields man");
       return;
     }
 
-    try {
-      const data = await axios.post<{ newHabit: any }>(
-        `http://localhost:8080/addHabit`,
-        {
-          name,
-          description,
-          userId: currentUserId,
-        },
-      );
-
-      toast.success(data.data.newHabit);
-      refreshHabits();
-    } catch (error) {
-      console.log(error);
-      toast.error("create habit failed");
-    }
-    return;
+    await addHabit({ name, description, userId: currentUserId });
+    refreshHabits();
   };
 
   return (
-    <div className="create-user">
+    <div className="create-habit">
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          createUser();
+          createHabit();
         }}
       >
         <Form.Group className="mb-3" controlId="formBasicEmail">

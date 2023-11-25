@@ -1,7 +1,4 @@
-import { FC, useEffect, useState } from "react";
-import axios from "axios";
-import { Button } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { FC } from "react";
 import { Garden } from "../types";
 
 // @todo: refresh garden upon habit completion, for now do it w a button

@@ -6,6 +6,7 @@ import axios from "axios";
 import { Garden } from "../types";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../slices/hooks";
+import { getGarden } from "../api/garden.api";
 
 const AdminPage: FC<{}> = () => {
   const [garden, setGarden] = useState<Garden | undefined>(undefined);
@@ -14,25 +15,14 @@ const AdminPage: FC<{}> = () => {
   );
 
   useEffect(() => {
-    if (currentUserId) {
-      fetchGarden();
-    }
+    if (currentUserId) fetchGarden();
   }, [currentUserId]);
 
   const fetchGarden = async () => {
-    try {
-      const garden = await axios.get<{ garden: Garden }>(
-        "http://localhost:8080/garden",
-        {
-          params: { userId: currentUserId },
-        },
-      );
-      toast.success("fetched garden");
-      setGarden(garden.data.garden);
-    } catch (error) {
-      console.log(error);
-      toast.error("failed to load garden");
-    }
+    if (!currentUserId) return;
+
+    const garden = await getGarden({ userId: currentUserId });
+    if (garden) setGarden(garden);
   };
 
   return (
@@ -40,7 +30,7 @@ const AdminPage: FC<{}> = () => {
       <Users />
       <Habits fetchGarden={fetchGarden} />
       {currentUserId && (
-        <DummyGarden garden={garden} fetchGarden={() => fetchGarden} />
+        <DummyGarden garden={garden} fetchGarden={() => fetchGarden()} />
       )}
     </div>
   );

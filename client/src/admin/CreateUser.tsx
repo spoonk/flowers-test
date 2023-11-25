@@ -2,6 +2,7 @@ import axios from "axios";
 import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { addUser } from "../api/users.api";
 
 interface createUserParams {
   refreshUsers: () => void;
@@ -18,28 +19,10 @@ const CreateUser: FC<createUserParams> = ({ refreshUsers }) => {
       return;
     }
 
-    try {
-      const data = await axios.post<{ newUserId: string }>(
-        `http://localhost:8080/addUser`,
-        {
-          username,
-          password,
-          email,
-        },
-      );
-
-      // @todo call another get on users :/
-      // would be so nice to have actions...
-      toast.success(data.data.newUserId);
-      refreshUsers();
-    } catch (error) {
-      console.log(error);
-      toast.error("create user failed");
-    }
-    return;
+    const newUserId = await addUser({ username, password, email });
+    if (newUserId) refreshUsers();
   };
 
-  // todo: form data for new user
   return (
     <div className="create-user">
       <Form

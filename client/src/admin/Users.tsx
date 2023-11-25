@@ -3,9 +3,10 @@ import { FC, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import SelectUser from "./SelectUser";
 import CreateUser from "./CreateUser";
-import { User } from "../types";
 import { useAppDispatch, useAppSelector } from "../slices/hooks";
 import { setUsers } from "../slices/userSlice";
+import { getUsers } from "../api/users.api";
+import { toast } from "react-toastify";
 
 const Users: FC<{}> = () => {
   const dispatch = useAppDispatch();
@@ -15,14 +16,11 @@ const Users: FC<{}> = () => {
 
   // todo: move this into a thunk so it can be called as a side-effect
   const fetchUsers = async () => {
-    // @todo: make server api client
-    try {
-      const users = await axios.get<{ users: User[] }>(
-        `http://localhost:8080/users`,
-      );
-      dispatch(setUsers(users.data.users));
-    } catch (error) {
-      console.log(error);
+    const users = await getUsers();
+    if (users) {
+      dispatch(setUsers(users));
+    } else {
+      toast.error("fetch users failed");
     }
   };
 

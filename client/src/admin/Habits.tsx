@@ -1,11 +1,11 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { toast } from "react-toastify";
 import { Habit } from "../types";
 import CreateHabit from "./CreateHabit";
 import HabitBox from "./HabitBox";
 import { useAppSelector } from "../slices/hooks";
+import { getHabits } from "../api/habits.api";
 
 interface HabitProps {
   fetchGarden: () => void;
@@ -18,18 +18,10 @@ const Habits: FC<HabitProps> = ({ fetchGarden }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
 
   const fetchHabits = async () => {
-    // @todo: make server api client
-    // @todo: dotenv for server route
-    try {
-      const habits = await axios.get<{ habits: Habit[] }>(
-        `http://localhost:8080/habits`,
-        {
-          params: { userId: currentUserId },
-        },
-      );
-      setHabits(habits.data.habits);
-      toast.success("fetched habits");
-    } catch (error) {}
+    if (!currentUserId) return;
+
+    const habits = await getHabits({ currentUserId });
+    if (habits) setHabits(habits);
   };
 
   useEffect(() => {
