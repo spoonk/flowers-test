@@ -4,31 +4,19 @@ import { ObjectId } from "mongoose";
 import User from "../../../models/user";
 import { addFlowerToGarden } from "../../garden/controllers/gardenController";
 import Flower from "../../../models/flowers";
+import {
+  addHabitParams,
+  completeHabitParams,
+  validateAddHabitParams,
+  validateCompleteHabitParams,
+} from "./habitValidation";
+import { randomInt } from "crypto";
 
-interface addHabitParams {
-  userId: string;
-  name: string;
-  description: string;
-}
-
-const validateAddHabitParams = ({
-  userId,
-  name,
-  description,
-}: addHabitParams | any): addHabitParams | undefined => {
-  if (
-    typeof userId !== "string" ||
-    typeof name !== "string" ||
-    typeof description !== "string"
-  ) {
-    return undefined;
-  }
-  return { userId, name, description };
-};
-
-const determineReward = async (userId: string) => {
-  const flowers = await Flower.find();
-  return flowers[0]?._id;
+const determineReward = async () => {
+  const rand = randomInt(100);
+  const flower = new Flower({ model: rand });
+  await flower.save();
+  return flower.id;
 };
 
 const addHabit = async (params: addHabitParams | any) => {
@@ -40,7 +28,7 @@ const addHabit = async (params: addHabitParams | any) => {
     userId,
     description,
     name,
-    reward: await determineReward(userId),
+    reward: await determineReward(),
     difficulty: "easy",
     type: "daily",
   });
@@ -48,7 +36,6 @@ const addHabit = async (params: addHabitParams | any) => {
   await newHabit.save();
   await addHabitToUser({ userId, habitId: newHabit.id });
 
-  // update user
   return { newHabit };
 };
 
@@ -62,7 +49,6 @@ const addHabitToUser = async ({
   const user = await User.findById(userId);
   if (!user) return;
 
-  // getting ugly :)
   user.habits.push(habitId);
   await user.save();
 };
@@ -73,31 +59,17 @@ const getHabits = async (userId: any) => {
   return habits;
 };
 
-interface completeHabitParams {
-  userId: string;
-  habitId: string;
-}
-
-const validateCompleteHabitParams = ({
-  userId,
-  habitId,
-}: completeHabitParams | any): completeHabitParams | undefined => {
-  if (typeof userId !== "string" || typeof habitId !== "string") {
-    return undefined;
-  }
-  return { userId, habitId };
-};
-
 const completeHabit = async (params: completeHabitParams | any) => {
   const validatedParams = validateCompleteHabitParams(params);
   if (!validatedParams) return { success: false };
   const { userId, habitId } = validatedParams;
+
   // @todo: refactor to pass habit around
   const habit = await Habit.findById(habitId);
-  if ((habit && habit.completedToday) || !habit) return;
+  if ((habit && habit.completedToday) || !habit) return { success: false };
   const flowerId = await resolveFlowerForHabit(habitId);
 
-  // @todo: weird cast here!
+  // @note: weird cast here!
   const gardenId = await addFlowerToGarden(flowerId as ObjectId, userId);
   return gardenId;
   // @todo: update habit statistics

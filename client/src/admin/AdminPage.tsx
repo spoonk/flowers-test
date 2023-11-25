@@ -27,7 +27,6 @@ const AdminPage: FC<{}> = () => {
           params: { userId: currentUserId },
         },
       );
-      console.log(garden);
       toast.success("fetched garden");
       setGarden(garden.data.garden);
     } catch (error) {

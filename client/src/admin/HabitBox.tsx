@@ -18,7 +18,7 @@ const HabitBox: FC<HabitBoxProps> = ({ habitId, habit, fetchGarden }) => {
   const completeHabit = async () => {
     try {
       await axios.post(`http://localhost:8080/completeHabit`, {
-        currentUserId,
+        userId: currentUserId,
         habitId,
       });
       toast.success(`completed ${habit.name}`);
