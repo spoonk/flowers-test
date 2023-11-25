@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { Habit } from "../types";

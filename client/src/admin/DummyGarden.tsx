@@ -4,8 +4,7 @@ import { Garden } from "../types";
 // @todo: refresh garden upon habit completion, for now do it w a button
 const DummyGarden: FC<{
   garden: Garden | undefined;
-  fetchGarden: () => void;
-}> = ({ garden, fetchGarden }) => {
+}> = ({ garden }) => {
   return (
     <div className="dummy-garden">
       {garden?.flowers.map((flower) => {

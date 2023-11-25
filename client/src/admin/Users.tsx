@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FC, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import SelectUser from "./SelectUser";

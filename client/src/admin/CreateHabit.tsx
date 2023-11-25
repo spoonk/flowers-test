@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";

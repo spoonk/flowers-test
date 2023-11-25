@@ -32,8 +32,25 @@ const addHabit = async ({
       },
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
-export { addHabit, getHabits };
+const completeHabit = async ({
+  userId,
+  habitId,
+}: {
+  userId: string;
+  habitId: string;
+}) => {
+  try {
+    await axios.post(`http://localhost:8080/completeHabit`, {
+      userId,
+      habitId,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { addHabit, completeHabit, getHabits };

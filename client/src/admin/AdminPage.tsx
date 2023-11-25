@@ -29,9 +29,7 @@ const AdminPage: FC<{}> = () => {
     <div className="admin-page">
       <Users />
       <Habits fetchGarden={fetchGarden} />
-      {currentUserId && (
-        <DummyGarden garden={garden} fetchGarden={() => fetchGarden()} />
-      )}
+      {currentUserId && <DummyGarden garden={garden} />}
     </div>
   );
 };
