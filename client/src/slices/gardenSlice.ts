@@ -15,7 +15,7 @@ export const gardenSlice = createSlice({
   name: "garden",
   initialState,
   reducers: {
-    setGarden: (state, action: PayloadAction<Garden>) => {
+    setGarden: (state, action: PayloadAction<Garden | undefined>) => {
       state.garden = action.payload;
     },
   },

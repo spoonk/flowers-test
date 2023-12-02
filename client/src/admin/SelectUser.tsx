@@ -2,12 +2,14 @@ import { FC } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../slices/hooks";
 import { setCurrentUserID } from "../slices/userSlice";
+import { setGarden } from "../slices/gardenSlice";
 
 const SelectUser: FC<{}> = () => {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.userReducer.users);
   const onItemClicked = (userId: string) => {
     dispatch(setCurrentUserID(userId));
+    dispatch(setGarden(undefined));
   };
 
   return (
