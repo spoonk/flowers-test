@@ -1,15 +1,11 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import Users from "./Users";
 import Habits from "./Habits";
-import DummyGarden from "./DummyGarden";
-import axios from "axios";
-import { Garden } from "../types";
-import { toast } from "react-toastify";
-import { useAppSelector } from "../slices/hooks";
+import { useAppDispatch, useAppSelector } from "../slices/hooks";
+import { setGarden } from "../slices/gardenSlice";
 import { getGarden } from "../api/garden.api";
-
 const AdminPage: FC<{}> = () => {
-  const [garden, setGarden] = useState<Garden | undefined>(undefined);
+  const dispatch = useAppDispatch();
   const currentUserId = useAppSelector(
     (state) => state.userReducer.currentUserID,
   );
@@ -22,14 +18,13 @@ const AdminPage: FC<{}> = () => {
     if (!currentUserId) return;
 
     const garden = await getGarden({ userId: currentUserId });
-    if (garden) setGarden(garden);
+    if (garden) dispatch(setGarden(garden));
   };
 
   return (
     <div className="admin-page">
       <Users />
       <Habits fetchGarden={fetchGarden} />
-      {currentUserId && <DummyGarden garden={garden} />}
     </div>
   );
 };
