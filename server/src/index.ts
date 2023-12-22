@@ -5,6 +5,7 @@ import { exit } from "process";
 import installUserRoutes from "./services/users/routes";
 import installHabitRoutes from "./services/habits/routes";
 import installGardenRoutes from "./services/garden/routes";
+import { logger } from "./utils/logger";
 const cors = require("cors");
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.listen(SERVER_PORT, () => {
+  logger.error("helpp");
   console.log(`server started on port ${SERVER_PORT}`);
 });
 
