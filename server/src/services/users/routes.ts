@@ -7,6 +7,11 @@ const installUserRoutes = (app: Express) => {
     const params = req.body;
 
     const { newUserId } = await addUser(params);
+    if (!newUserId) {
+      res.status(400).end();
+      return;
+    }
+
     res.json({ newUserId });
   });
 
