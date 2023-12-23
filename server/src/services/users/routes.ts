@@ -3,7 +3,6 @@ import { addUser, getUsers } from "./controllers/userController";
 
 const installUserRoutes = (app: Express) => {
   app.post("/addUser", async (req: Request, res: Response) => {
-    console.log("adduser");
     const params = req.body;
 
     const { newUserId } = await addUser(params);

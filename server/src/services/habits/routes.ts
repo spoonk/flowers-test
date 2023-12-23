@@ -7,10 +7,9 @@ import {
 
 const installHabitRoutes = (app: Express) => {
   app.post("/addHabit", async (req: Request, res: Response) => {
-    console.log("/addHabit");
     const params = req.body;
-    const { newHabit } = await addHabit(params);
-    res.json({ newHabit });
+    await addHabit(params);
+    res.json({ success: true });
   });
 
   app.get("/habits", async (req: Request, res: Response) => {
@@ -20,11 +19,9 @@ const installHabitRoutes = (app: Express) => {
   });
 
   app.post("/completeHabit", async (req: Request, res: Response) => {
-    console.log("/completeHabit");
     const params = req.body;
-    const gardenId = await completeHabit(params);
-    // does this make sense to return gardenId? answer: no
-    res.json({ gardenId });
+    await completeHabit(params);
+    res.json({ success: true });
   });
 };
 

@@ -36,7 +36,7 @@ const addHabit = async (params: addHabitParams | any) => {
   await newHabit.save();
   await addHabitToUser({ userId, habitId: newHabit.id });
 
-  return { newHabit };
+  return { newHabit: newHabit.name };
 };
 
 const addHabitToUser = async ({
@@ -56,7 +56,12 @@ const addHabitToUser = async ({
 const getHabits = async (userId: any) => {
   if (typeof userId !== "string") return [];
   const habits = await Habit.find({ userId });
-  return habits;
+  return habits.map((habit) => {
+    return {
+      id: habit.id,
+      name: habit.name,
+    };
+  });
 };
 
 const completeHabit = async (params: completeHabitParams | any) => {
