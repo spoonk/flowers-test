@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 const users = [
   {
-    _id: "1",
+    id: "1",
     username: "jerry",
   },
 ];
@@ -26,7 +26,7 @@ describe("GET /users", () => {
     const res = await chai.request(app).get("/users");
     expect(res).to.have.status(200);
     expect(res.body.users).to.exist;
-    expect(res.body.users[0]._id).to.equal("1");
+    expect(res.body.users[0].id).to.equal("1");
   });
 });
 
@@ -65,7 +65,7 @@ describe("POST /adduser", () => {
       .post("/addUser")
       .set("content-type", "application/x-www-form-urlencoded")
       .send({
-        username: 'un',
+        username: "un",
         password: "pwd",
       });
 
@@ -78,7 +78,7 @@ describe("POST /adduser", () => {
       .post("/addUser")
       .set("content-type", "application/x-www-form-urlencoded")
       .send({
-        username: 'un',
+        username: "un",
         email: "em",
       });
 

@@ -36,16 +36,17 @@ const getOrCreateGarden = async (userId: string) => {
 const getGarden = async (
   params: { userId: string } | any,
 ): Promise<{ garden: any }> => {
+  const undefinedGarden = { garden: undefined };
   const validatedParams = validateGetGardenParams(params);
 
-  if (!validatedParams) return { garden: undefined };
+  if (!validatedParams) return undefinedGarden;
   const { userId } = params;
 
   const user = await User.findById(userId);
-  if (!user) return { garden: undefined };
+  if (!user) return undefinedGarden;
 
   const gardenId = user.garden;
-  if (!gardenId) return { garden: undefined };
+  if (!gardenId) return undefinedGarden;
 
   const garden = await Garden.findById(gardenId);
   return { garden };

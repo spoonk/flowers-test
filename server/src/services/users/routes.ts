@@ -15,7 +15,7 @@ const installUserRoutes = (app: Express) => {
   });
 
   app.get("/users", async (_, res: Response) => {
-    const { users } = await getUsers();
+    const users = await getUsers();
     res.json({ users });
   });
 };

@@ -26,7 +26,12 @@ const addUser = async (
 
 const getUsers = async () => {
   const users = await User.find();
-  return { users };
+  return users.map((user) => {
+    return {
+      id: user.id,
+      name: user.username,
+    };
+  });
 };
 
 export { addUser, getUsers };
