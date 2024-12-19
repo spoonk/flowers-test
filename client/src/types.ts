@@ -9,7 +9,7 @@ export interface Habit {
   streak: number;
   daysCompleted: string[];
   health: number;
-  _id: string;
+  id: string;
 }
 
 export interface User {
@@ -19,7 +19,7 @@ export interface User {
   accountCreated: string;
   lastLoginTime: string;
   timeZone: string;
-  _id: string;
+  id: string;
 }
 
 export interface Garden {

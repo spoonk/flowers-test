@@ -23,14 +23,11 @@ const addHabit = async ({
   userId: string;
 }) => {
   try {
-    const data = await axios.post<{ newHabit: any }>(
-      `http://localhost:8080/addHabit`,
-      {
-        name,
-        description,
-        userId,
-      },
-    );
+    await axios.post<{ newHabit: any }>(`http://localhost:8080/addHabit`, {
+      name,
+      description,
+      userId,
+    });
   } catch (error) {
     console.error(error);
   }

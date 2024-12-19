@@ -17,6 +17,7 @@ export const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
+    // @todo: should reload garden, habits
     setCurrentUserID: (state, action: PayloadAction<string>) => {
       state.currentUserID = action.payload;
     },
